@@ -52,7 +52,7 @@ const App = () => {
         {
             todolist.map((it, idx) => <li key={it.id} className={it.done ? 'on' : ''}>
                 <input type='checkbox' onChange={() => handlerModify(it.id)} />
-                {it.id} {it.title}  / {it.content}
+                {idx + 1} {it.title}  / {it.content}
                 <button onClick={() => handlerDelete(it.id)}>삭제</button>
                 {console.log(it.done)}
             </li>)
