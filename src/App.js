@@ -1,74 +1,43 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react';
+import { Link, NavLink, Route, Routes } from 'react-router-dom';
+import List from './board/List';
+import Modify from './board/Modify';
+import View from './board/View';
+import Write from './board/Write';
 
 const App = () => {
-  const [todo, setTodo] = useState({});
-  const [todolist, setTodolist] = useState([]);
-  const num = useRef(1);
-  const handlerInput = (e) => {
-    const { name, value } = e.target;
-    setTodo({
-      ...todo,
-      [name]: value,
-      id: num.current,
-      done:false,
-    })
-  }
 
-  const handlerList = () => {
-    if (todo.title.length < 5) {
-      alert('더 입력해주세요...')      
-      //return 일을끝내버리는 용도
-      return 
-    }
-    setTodolist([...todolist, todo]);
-    setTodo({
-      title: "",
-      content: "",
-    });
-    //num.current = num.current + 1
-    num.current++
-  }
+    const [input, setInput] = useState({});
+    const [boardList, setBoardList] = useState([]);
+    const id = useRef(1);
+    return (
+        <div>
+
+            <header>
+                <nav>
+                    <ul>
+                        <li><NavLink to='/'>HOME</NavLink></li>
+                        <li><NavLink to='/board'>board</NavLink></li>
+                        <li><NavLink to='/view'>view</NavLink></li>
+                        <li><NavLink to='/write'>write</NavLink></li>
+                    </ul>
+                </nav>
+            </header>
+            <Routes>
+                <Route path='/' element={<div>HOme</div>} />
+                <Route path='/board' element={<List boardList={boardList} />} />
+                <Route path='/view/:id' element={<View boardList={boardList} setBoardList={setBoardList} />} />
+                <Route path='/modify/:id' element={<Modify boardList={boardList} setBoardList={setBoardList} />} />
+                <Route path='/write' element={<Write input={input} setInput={setInput} boardList={boardList} setBoardList={setBoardList} id={id} />} />
+            </Routes>
 
 
-  const handlerDelete = (id) => { 
-    setTodolist(todolist.filter(it => id !== it.id))
-  }
 
-  const handlerModify = (id) => {
-    console.log(id);
-    setTodolist(todolist.map(it => (
-      id === it.id
-        ? {
-            ...it,
-            done: !it.done
-        }
-        :it
-    )))
-  }
 
-  return (
-    <div>
-      <ul>
-        {
-            todolist.map((it, idx) => <li key={it.id} className={it.done ? 'on' : ''}>
-                <input type='checkbox' onChange={() => handlerModify(it.id)} />
-                {idx + 1} {it.title}  / {it.content}
-                <button onClick={() => handlerDelete(it.id)}>삭제</button>
-                {console.log(it.done)}
-            </li>)
-        }
-      </ul>
-      {/* <input onChange={(e) => setTodo(e.target.value)} value={todo} name='title' /> 
-      <input onChange={(e) => setTodo({ ...todo, [e.target.name]: e.target.value })} name='title'/>
-      <input onChange={(e) => setTodo({ ...todo, [e.target.name]: e.target.value })} name='content'/>
-      <button onClick={() => setTodolist([...todolist, todo])}>WRITE</button>
-      */}
-      <input onChange={handlerInput} name='title' value={todo.title || ''} />
-      <input onChange={handlerInput} name='content' value={todo.content || ''} />
-      <button onClick={handlerList}>WRITE</button>
-      {console.log(todo, num.current)}
-    </div>
-  )
+            {console.log(input)}
+
+        </div >
+    )
 }
 
 export default App
