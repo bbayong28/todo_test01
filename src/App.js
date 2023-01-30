@@ -41,7 +41,7 @@ const App = () => {
                 <button onClick={() => console.log(JSON.parse(localStorage.getItem('list')))}>LocalStorage get</button> */}
             </header>
             <Routes>
-                <Route path='/' element={<div>HOme</div>} />
+                <Route path='/' element={<div>Home</div>} />
                 <Route path='/board' element={<List boardList={boardList} setBoardList={setBoardList} />} />
                 <Route path='/view/:id' element={<View boardList={boardList} setBoardList={setBoardList} />} />
                 <Route path='/modify/:id' element={<Modify boardList={boardList} setBoardList={setBoardList} />} />
